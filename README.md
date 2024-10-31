@@ -1,5 +1,5 @@
-# dhbwmawwi20<xx> SE<x>
-DHBW Mannheim, Wirtschaftsinformatik, <Kurs>
+# dhbwmawwi2024seb
+DHBW Mannheim, Wirtschaftsinformatik, WWI2024SEB
 
 ## Skript
 aktuelles Skript (inklusive Download): [Skript](https://matthiasbergneels.github.io/md-scripts/)
