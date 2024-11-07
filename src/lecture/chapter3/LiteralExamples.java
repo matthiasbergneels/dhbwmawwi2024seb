@@ -91,5 +91,13 @@ public class LiteralExamples {
 
     System.out.println(html);
 
+
+    int numberK;
+
+    String myMessage;
+
+    myMessage = "Hier steht jetzt ganz viel Text!!";
+
+
   }
 }
