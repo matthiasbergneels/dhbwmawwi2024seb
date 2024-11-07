@@ -1,4 +1,4 @@
-package chapter2;
+package lecture.chapter2;
 
 public class HelloWorld {
 
