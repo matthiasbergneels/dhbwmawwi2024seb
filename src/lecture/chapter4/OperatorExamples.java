@@ -22,9 +22,11 @@ public class OperatorExamples {
 
     ++numberA;    // numberA = 1 + numberA;
 
+    numberA = 10;
+    numberB = 5;
     System.out.println("numberA: " + numberA);    // 11
     System.out.println("numberB: " + numberB);    // 5
-    result = numberA++ + numberB + numberA;       // --> 28
+    result = numberA++ + numberA + numberB;       // ??? Warum 26? --> 28
     System.out.println(result);
     System.out.println("numberA: " + numberA);   // 12
     System.out.println("numberB: " + numberB);   // 5
