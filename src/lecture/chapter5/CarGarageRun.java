@@ -3,7 +3,12 @@ package lecture.chapter5;
 class CarGarageRun {
 
   public static void main(String[] args) {
-    Car myCar = new Car("Pink", "HD AB-1234", 350, "Mitubishi");
+
+    System.out.println("Anzahl an erzeugten Autos: " + Car.getCarCount());
+
+    Car myCar = new Car("Pink", "HD AB-1234", 350, CarBrand.MITSUBISHI);
+
+    System.out.println("Anzahl an erzeugten Autos: " + Car.getCarCount());
 
     /*
     myCar.color = "Pink";
@@ -11,7 +16,7 @@ class CarGarageRun {
     myCar.hp = 350;
    */
 
-    Car yourCar = new Car("kack braun", "MA HH-6728", 250, "Mercedes");
+    Car yourCar = new Car("kack braun", "MA HH-6728", 250, CarBrand.MERCEDES);
 
     /*
     yourCar.color = "Schwarz";
@@ -50,5 +55,21 @@ class CarGarageRun {
     myCar.printCarDetails();
     yourCar.printCarDetails();
 
+
+    System.out.println("Anzahl an erzeugten Autos: " + yourCar.getCarCount());
+    System.out.println("Anzahl an erzeugten Autos: " + Car.getCarCount());
+
+    myCar = null;
+    yourCar = null;
+
+    System.gc();
+
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+
+    System.out.println("Anzahl an erzeugten Autos: " + Car.getCarCount());
   }
 }

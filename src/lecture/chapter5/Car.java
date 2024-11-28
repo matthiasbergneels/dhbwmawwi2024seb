@@ -6,21 +6,35 @@ public class Car {
   private String color;
   private String licensePlateNumber;
   private int hp;
-  public final String brand;
+  public final CarBrand brand;
   private double currentSpeed;
 
+  // Klassenattribute
+  private static int carCount;
+
+  // Initialisierungs Block - Klassenkonstruktor - wird EINMAL für die Klasse aufgerufen
+  static{
+    // Lese aktuelle Anzahl aus Datenbank aus
+    carCount = 0;
+  }
+
+
   // Konstruktoren
-  public Car(String color, String licensePlateNumber, int hp, String brand){
+
+  // Initialisierungsblock für Objekte
+  {
+    // Läuft vor JEDEM Konstruktor Aufruf
+    // ...
+  }
+
+  public Car(String color, String licensePlateNumber, int hp, CarBrand brand){
     this.setColor(color);
     this.setLicensePlateNumber(licensePlateNumber);
     this.setHp(hp);
-    if(brand != null && (brand.equals("Mitsubishi") || brand.equals("Mercedes") || brand.equals("BMW") || brand.equals("Fiat"))){
-      this.brand = brand;
-    } else {
-      this.brand = "Fiat";
-    }
+    this.brand = (brand != null) ? brand : CarBrand.FIAT;
 
     currentSpeed = 0.0;
+    carCount++;
   }
 
   // (Instanz-)Methoden
@@ -43,7 +57,7 @@ public class Car {
   }
 
   protected void printCarDetails(){
-    System.out.println("Mein Auto ist ein " + brand + " in " + color + " mit " + hp + " PS. Aktuelle Geschwindigkeit " + currentSpeed + " km/h");
+    System.out.println("Mein Auto ist ein " + brand + " (Preissegment: " + brand.getPriceTag() + ") in " + color + " mit " + hp + " PS. Aktuelle Geschwindigkeit " + currentSpeed + " km/h");
   }
 
   // Getter / Setter
@@ -59,7 +73,7 @@ public class Car {
     return hp;
   }
 
-  public String getBrand(){
+  public CarBrand getBrand(){
     return brand;
   }
 
@@ -87,5 +101,15 @@ public class Car {
 
   public void setLicensePlateNumber(String licensePlateNumber){
     this.licensePlateNumber = licensePlateNumber;
+  }
+
+  // Klassenmethoden
+  public static int getCarCount(){
+    return carCount;
+  }
+
+  protected void finalize(){
+    System.out.println("Das Auto von der Marke " + this.brand + " in der Farbe " + this.color + " wird verschrottet");
+    carCount--;
   }
 }
