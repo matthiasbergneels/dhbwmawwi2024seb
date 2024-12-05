@@ -18,7 +18,6 @@ public class Car {
     carCount = 0;
   }
 
-
   // Konstruktoren
 
   // Initialisierungsblock für Objekte
