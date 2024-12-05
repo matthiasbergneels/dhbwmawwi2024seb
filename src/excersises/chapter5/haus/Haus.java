@@ -2,6 +2,12 @@ package excersises.chapter5.haus;
 
 public class Haus {
 
+  public enum BUILD_TYPE{
+    FENSTER,
+    TUEREN,
+    ETAGEN
+  }
+
   public static final int DEFAULT_TUEREN_ANZAHL = 2;
   public static final int DEFAULT_FENSTER_ANZAHL = 6;
   public static final int DEFAULT_ETAGEN_ANZAHL = 2;
@@ -43,8 +49,43 @@ public class Haus {
     this(DEFAULT_TUEREN_ANZAHL, DEFAULT_FENSTER_ANZAHL, DEFAULT_ETAGEN_ANZAHL, DEFAULT_FLAECHE, DEFAULT_STRASSE, DEFAULT_HAUSNUMMER, DEFAULT_PLZ, DEFAULT_ORT, false);
   }
 
-  
+  // Überladene Konstruktoren nach Aufgabe
+  // Türen Konstruktor
+  public Haus(int tueren){
+    this(tueren, DEFAULT_FENSTER_ANZAHL, DEFAULT_ETAGEN_ANZAHL, DEFAULT_FLAECHE, DEFAULT_STRASSE, DEFAULT_HAUSNUMMER, DEFAULT_PLZ, DEFAULT_ORT, false);
+  }
 
+  // Fenster Konstruktor mit anderem Datentype → nicht so geil
+  public Haus(byte fenster){
+    this(DEFAULT_TUEREN_ANZAHL, fenster, DEFAULT_ETAGEN_ANZAHL, DEFAULT_FLAECHE, DEFAULT_STRASSE, DEFAULT_HAUSNUMMER, DEFAULT_PLZ, DEFAULT_ORT, false);
+  }
+
+  // Konstruktor mit BUILD_TYPE → auch nicht so geil
+  public Haus(BUILD_TYPE toBuild, int value){
+    this(DEFAULT_TUEREN_ANZAHL, DEFAULT_FENSTER_ANZAHL, DEFAULT_ETAGEN_ANZAHL, DEFAULT_FLAECHE, DEFAULT_STRASSE, DEFAULT_HAUSNUMMER, DEFAULT_PLZ, DEFAULT_ORT, false);
+
+    if(toBuild == BUILD_TYPE.FENSTER){
+      this.setFenster(value);
+    } else if(toBuild == BUILD_TYPE.TUEREN){
+      this.setTueren(value);
+    } else if(toBuild == BUILD_TYPE.ETAGEN){
+      this.setEtagen(value);
+    }
+  }
+
+  // Lösungsansatz Factory Methods
+  // → Nicht ganz so schlecht
+  public static Haus baueHausMitTueren(int tueren){
+    return new Haus(tueren, DEFAULT_FENSTER_ANZAHL, DEFAULT_ETAGEN_ANZAHL, DEFAULT_FLAECHE, DEFAULT_STRASSE, DEFAULT_HAUSNUMMER, DEFAULT_PLZ, DEFAULT_ORT, false);
+  }
+
+  public static Haus baueHausMitFenstern(int fenster){
+    return new Haus(DEFAULT_TUEREN_ANZAHL, fenster, DEFAULT_ETAGEN_ANZAHL, DEFAULT_FLAECHE, DEFAULT_STRASSE, DEFAULT_HAUSNUMMER, DEFAULT_PLZ, DEFAULT_ORT, false);
+  }
+
+  public static Haus baueHausMitTuerenUndMitFenstern(int tueren, int fenster){
+    return new Haus(tueren, fenster, DEFAULT_ETAGEN_ANZAHL, DEFAULT_FLAECHE, DEFAULT_STRASSE, DEFAULT_HAUSNUMMER, DEFAULT_PLZ, DEFAULT_ORT, false);
+  }
 
   // Getter & Setter
   public int getTueren() {
