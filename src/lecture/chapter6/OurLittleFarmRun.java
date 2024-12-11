@@ -18,6 +18,15 @@ public class OurLittleFarmRun {
     myDog.breath();
     myDog.eat();
     myDog.bark();
+    myDog.eat(1.5f);
+
+    Bird myBird = new Bird("Tweety", 0.15f, 15.3f, true);
+
+    System.out.println("Mit myBird interagieren:");
+    myBird.move();
+    myBird.breath();
+    myBird.eat();
+    myBird.tweet();
 
   }
 }

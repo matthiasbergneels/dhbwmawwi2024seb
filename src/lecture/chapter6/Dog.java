@@ -13,4 +13,16 @@ public class Dog extends Animal {
     System.out.println("Der Hund " + getDescription() + " bellt.");
   }
 
+  // Überschreiben
+  public void eat(){
+    super.eat();
+    System.out.println("- Hunde fressen Fleisch");
+  }
+
+  // Überladene Methode
+  public void eat(float amount){
+    this.eat();
+    System.out.println("- Menge: " + amount + " kg.");
+  }
+
 }
