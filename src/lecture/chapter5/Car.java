@@ -102,13 +102,18 @@ public class Car {
     this.licensePlateNumber = licensePlateNumber;
   }
 
+  protected void finalize(){
+    System.out.println("Das Auto von der Marke " + this.brand + " in der Farbe " + this.color + " wird verschrottet");
+    carCount--;
+  }
+
+
   // Klassenmethoden
   public static int getCarCount(){
     return carCount;
   }
 
-  protected void finalize(){
-    System.out.println("Das Auto von der Marke " + this.brand + " in der Farbe " + this.color + " wird verschrottet");
-    carCount--;
-  }
+
+
+
 }
