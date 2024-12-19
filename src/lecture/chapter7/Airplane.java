@@ -2,7 +2,7 @@ package lecture.chapter7;
 
 import java.io.Serializable;
 
-public class Airplane implements Bookable, Serializable, Comparable<Airplane> {
+public class Airplane implements PriorityBooking, Serializable, Comparable<Airplane> {
 
   private boolean[] bookedSeats;
 
@@ -11,13 +11,38 @@ public class Airplane implements Bookable, Serializable, Comparable<Airplane> {
   }
 
   @Override
-  public boolean book(int slots) {
-    return false;
+  public int freeSlots() {
+    int freeSlots = 0;
+    for(boolean bookedSeat : bookedSeats){
+      if(!bookedSeat){
+        freeSlots++;
+      }
+    }
+    return freeSlots;
   }
 
   @Override
-  public int freeSlots() {
-    return 0;
+  public boolean book(int slots) {
+    if(slots > freeSlots()){
+      return false;
+    }
+
+    for(int i = 0; i < bookedSeats.length; i++){
+      if(!bookedSeats[i]){
+        bookedSeats[i] = true;
+        slots--;
+      }
+
+      if(slots == 0){
+        break;
+      }
+    }
+    return true;
+  }
+
+  @Override
+  public boolean bookWithPriority(int slots) {
+    return false;
   }
 
 
@@ -29,4 +54,6 @@ public class Airplane implements Bookable, Serializable, Comparable<Airplane> {
   public int compareTo(Airplane o) {
     return 0;
   }
+
+
 }
