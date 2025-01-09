@@ -196,4 +196,10 @@ public class Haus {
   public static int getHauszaehler() {
     return hauszaehler;
   }
+
+  @Override
+  protected void finalize() {
+    hauszaehler--;
+    System.out.println(this + " wird abgerissen!");
+  }
 }
