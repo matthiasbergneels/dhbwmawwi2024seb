@@ -1,5 +1,7 @@
 package lecture.chapter7;
 
+import lecture.chapter8.NotEnoughFreeSlotsException;
+
 import java.io.Serializable;
 
 public class Airplane implements PriorityBooking, Serializable, Comparable<Airplane> {
@@ -22,9 +24,9 @@ public class Airplane implements PriorityBooking, Serializable, Comparable<Airpl
   }
 
   @Override
-  public boolean book(int slots) {
+  public void book(int slots) throws NotEnoughFreeSlotsException {
     if(slots > freeSlots()){
-      return false;
+      throw new NotEnoughFreeSlotsException(freeSlots(), slots);
     }
 
     for(int i = 0; i < bookedSeats.length; i++){
@@ -37,7 +39,6 @@ public class Airplane implements PriorityBooking, Serializable, Comparable<Airpl
         break;
       }
     }
-    return true;
   }
 
   @Override
