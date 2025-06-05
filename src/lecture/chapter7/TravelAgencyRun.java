@@ -1,10 +1,11 @@
 package lecture.chapter7;
 
+import lecture.chapter8.InvalidSlotsToBookValueException;
 import lecture.chapter8.NotEnoughFreeSlotsException;
 
 public class TravelAgencyRun {
 
-  public static void main(String[] args) throws NotEnoughFreeSlotsException {
+  public static void main(String[] args) {
 
     Airplane a380 = new Airplane(380);
     Hotel hilton = new Hotel(150);
@@ -12,9 +13,19 @@ public class TravelAgencyRun {
     a380.flight();
     hilton.clean();
 
-    a380.book(150);
-    System.out.println("Freue Plätze im Flugzeug: " + a380.freeSlots());
+    try {
+      a380.book(-50);
+      System.out.println("Freue Plätze im Flugzeug: " + a380.freeSlots());
 
+    } catch (NotEnoughFreeSlotsException exception) {
+      System.out.println(exception.getMessage());
+
+    }catch (InvalidSlotsToBookValueException exception) {
+      System.out.println(exception.getMessage());
+
+      System.out.println("Wir buchen den Betragswert:");
+
+    }
     // Narrowing Cast
     Bookable thingToBook = a380;
 
@@ -40,6 +51,12 @@ public class TravelAgencyRun {
 
           System.out.println("Wir versuchen gleich weniger zu buchen...");
           return;
+        }catch(InvalidSlotsToBookValueException exception){
+          System.out.println(exception.getMessage());
+
+          System.out.println("Buche mehr Slots!!");
+        }catch(Exception exception) {
+          System.out.println("Irgend eine Ausnahme wurde geworfen :-( ");
         }finally{
           System.out.println("Finally läuft IMMER!");
         }
