@@ -4,6 +4,7 @@ import lecture.chapter8.InvalidSlotsToBookValueException;
 import lecture.chapter8.NotEnoughFreeSlotsException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,6 +41,18 @@ class HotelTest {
     Hotel hotelUnderTest = new Hotel(100);
 
     Assertions.assertThrows(NotEnoughFreeSlotsException.class, ()-> hotelUnderTest.book(101));
+  }
+
+  @Test
+  void notEnoughFreeSlotsExceptionAnonymousClassImplementation(){
+    Hotel hotelUnderTest = new Hotel(100);
+
+    Assertions.assertThrows(NotEnoughFreeSlotsException.class, new Executable() {
+      @Override
+      public void execute() throws Throwable {
+        hotelUnderTest.book(101);
+      }
+    });
   }
 
 }
