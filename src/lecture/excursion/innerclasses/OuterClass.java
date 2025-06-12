@@ -68,31 +68,63 @@ public class OuterClass {
       }
     };
 
-    innerAnonymousClass.printMessage(message);
+    Object objectImplementation = new Object(){ // anonymousClass extends Object
 
+      private String memeberText = "Test";
+
+      // Methode ist nicht von außen aufrufbar
+      public void printMessage(String message){
+        System.out.println(message);
+      }
+
+      public String toString(){
+        return "Meine Message aus der anonymen Klasse " + memeberText;
+      }
+    };
+
+    System.out.println(objectImplementation);
+
+    System.out.println(innerAnonymousClass.toString());
+    innerAnonymousClass.printMessage(message);
+  }
+
+  public static void printMessageFromLambda(String message){
+
+    Printable lambdaFunction = (lambdaMessage)->{System.out.println("Nachricht von: LambdaFunktion - " + message + " / Class Id: " + outerClassId);};
+
+    // ( Eingabeparameter ... )->Anweisung;
+    // ( Eingabeparameter ... )->{Anweisung1; Anweisung2; Anweisung3 };
+    // input->Anweisung;
+    // (input)->{Anweisung};
+
+    System.out.println(lambdaFunction.toString());
+    System.out.println(lambdaFunction.hashCode());
+    lambdaFunction.printMessage(message);
   }
 
 
   public static void main(String[] args) {
 
     String message = "unsere tolle Nachricht durch die Klassen!";
-    OuterClass outerClass = new OuterClass(42);
-    OuterClass secondOuterClassObject = new OuterClass(13);
+    OuterClass firstOuterClassInstance = new OuterClass(42);
+    OuterClass secondOuterClassInstance = new OuterClass(13);
 
-    outerClass.printMessage(message);
+    firstOuterClassInstance.printMessage(message);
 
     OuterClass.InnerTopLevelClass innerTopLevelClass = new OuterClass.InnerTopLevelClass();
     innerTopLevelClass.printMessage(message);
 
-    OuterClass.InnerElementClass innerElementClass = outerClass.new InnerElementClass();
+    OuterClass.InnerElementClass innerElementClass = firstOuterClassInstance.new InnerElementClass();
     innerElementClass.printMessage(message);
 
-    OuterClass.InnerElementClass secondInnerElementClass = secondOuterClassObject.new InnerElementClass();
+    OuterClass.InnerElementClass secondInnerElementClass = secondOuterClassInstance.new InnerElementClass();
     secondInnerElementClass.printMessage(message);
 
     OuterClass.printMessageFromInnerLocalClass(message);
     OuterClass.printMessageFromSecondInnerLocalClass(message);
 
     OuterClass.printFromAnonymusInnerClass(message);
+
+    OuterClass.printMessageFromLambda(message);
   }
 }

@@ -18,7 +18,7 @@ class HotelTest {
     Hotel hotelUnderTest = new Hotel(100);
 
     try {
-      hotelUnderTest.book(-1);
+      hotelUnderTest.book(101);
     } catch (NotEnoughFreeSlotsException e) {
       System.out.println(e.getMessage());
       Assertions.assertNotNull(e);
