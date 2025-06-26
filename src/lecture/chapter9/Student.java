@@ -1,6 +1,6 @@
 package lecture.chapter9;
 
-public class Student {
+public class Student implements Comparable<Student>{
 
   private int id;
   private String name;
@@ -55,5 +55,19 @@ public class Student {
       ", familyName='" + familyName + '\'' +
       ", age=" + age +
       '}';
+  }
+
+  @Override
+  public int compareTo(Student o) {
+
+    if(this.id != o.id){
+      return this.id - o.id;
+    }
+
+    if(!this.familyName.equalsIgnoreCase(o.familyName)){ // --> Müller != MÜLLER
+      return this.familyName.compareToIgnoreCase(o.familyName);
+    }
+
+    return this.name.compareToIgnoreCase(o.name);
   }
 }
