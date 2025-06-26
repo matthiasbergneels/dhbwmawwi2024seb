@@ -1,5 +1,7 @@
 package lecture.chapter9;
 
+import java.util.Objects;
+
 public class Student implements Comparable<Student>{
 
   private int id;
@@ -57,6 +59,7 @@ public class Student implements Comparable<Student>{
       '}';
   }
 
+
   @Override
   public int compareTo(Student o) {
 
@@ -70,6 +73,23 @@ public class Student implements Comparable<Student>{
 
     return this.name.compareToIgnoreCase(o.name);
   }
+
+  public int hashCode(){
+    return id ^ familyName.hashCode() ^ name.hashCode();
+  }
+
+
+/*
+  @Override
+  public int hashCode() {
+    int result = id;
+    result = 31 * result + Objects.hashCode(name);
+    result = 31 * result + Objects.hashCode(familyName);
+    return result;
+  }
+
+ */
+
 
   @Override
   public boolean equals(Object o){
@@ -101,6 +121,16 @@ public class Student implements Comparable<Student>{
 
     return this.name.equals(student.name);
   }
+
+  /*
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Student student = (Student) o;
+    return id == student.id && Objects.equals(name, student.name) && Objects.equals(familyName, student.familyName);
+  }
+   */
 
   /*
   @Override
