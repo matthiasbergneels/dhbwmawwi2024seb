@@ -70,4 +70,47 @@ public class Student implements Comparable<Student>{
 
     return this.name.compareToIgnoreCase(o.name);
   }
+
+  @Override
+  public boolean equals(Object o){
+    // Alias Vergleich
+    if(this == o){
+      return true;
+    }
+
+    // null Vergleich
+    if(o == null){
+      return false;
+    }
+
+    // Typ Vergleich
+    if(!(this.getClass().equals(o.getClass()))){
+      return false;
+    }
+
+    // Attribut Vergleich
+    Student student = (Student)o;
+
+    if(this.id != student.id){
+      return false;
+    }
+
+    if(this.familyName.equals(student.familyName)){
+      return false;
+    }
+
+    return this.name.equals(student.name);
+  }
+
+  /*
+  @Override
+  public boolean equals(Object obj) {
+
+    if(obj instanceof Student toCompare){
+      return this.compareTo(toCompare) == 0;
+    }
+
+    return false;
+  }
+   */
 }

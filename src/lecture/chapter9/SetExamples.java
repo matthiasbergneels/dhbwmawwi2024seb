@@ -68,5 +68,30 @@ public class SetExamples {
       System.out.println(currentStudent);
     }
 
+
+    Student s1 =  new Student(9090, "Zeus", "Gott", 233);
+    Student s2 =  new Student(4711, "Zeus", "Gott", 21);
+    Student s3 = s1;
+    Student s4 =  new Student(9090, "Zeus", "Gott", 233);
+    Student s5 =  new Student(9090, "Zeus", "Gott", 33);
+
+    System.out.println("s1 == s2: " + (s1 == s2));
+    System.out.println("s1 == s3: " + (s1 == s3));
+    System.out.println("s1 == s4: " + (s1 == s4));
+    System.out.println("s1 == s5: " + (s1 == s5));
+    System.out.println("s1 == null: " + (s1 == null));
+
+    System.out.println("s1.compareTo(s2): " + (s1.compareTo(s2)));
+    System.out.println("s1.compareTo(s3): " + (s1.compareTo(s3)));
+    System.out.println("s1.compareTo(s4): " + (s1.compareTo(s4)));
+    System.out.println("s1.compareTo(s5): " + (s1.compareTo(s5)));
+    //System.out.println("s1.compareTo(null): " + (s1.compareTo(null)));
+
+    System.out.println("s1.equals(s2): " + (s1.equals(s2))); // false
+    System.out.println("s1.equals(s3): " + (s1.equals(s3))); // true
+    System.out.println("s1.equals(s4): " + (s1.equals(s4))); // true
+    System.out.println("s1.equals(s5): " + (s1.equals(s5))); // false --> true
+    System.out.println("s1.equals(null): " + (s1.equals(null))); // false
+
   }
 }
