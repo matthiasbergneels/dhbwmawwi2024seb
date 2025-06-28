@@ -30,7 +30,14 @@ public class BorderLayoutExample extends JFrame {
   }
 
   public static void main(String[] args) {
-    new BorderLayoutExample();
+    // invokeLater für sichere parallel Verarbeitung
+    SwingUtilities.invokeLater(() -> {
+        JFrame borderLayoutExample = new BorderLayoutExample();
+        borderLayoutExample.setVisible(true);
+        System.out.println("Starting UI-Frame - " + Thread.currentThread());
+      }
+    );
+    System.out.println("Added UI-Frame to starting queue - " + Thread.currentThread());
   }
 
 }

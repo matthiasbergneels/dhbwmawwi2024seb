@@ -32,6 +32,13 @@ public class GridLayoutExample extends JFrame {
   }
 
   public static void main(String[] args) {
-    new GridLayoutExample();
+    // invokeLater für sichere parallel Verarbeitung
+    SwingUtilities.invokeLater(() -> {
+        JFrame gridLayoutExample = new GridLayoutExample();
+        gridLayoutExample.setVisible(true);
+        System.out.println("Starting UI-Frame - " + Thread.currentThread());
+      }
+    );
+    System.out.println("Added UI-Frame to starting queue - " + Thread.currentThread());
   }
 }
