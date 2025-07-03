@@ -30,5 +30,6 @@ public class FlowLayoutExample extends JFrame {
       }
     );
     System.out.println("Added UI-Frame to starting queue - " + Thread.currentThread());
+    System.out.println("Ende main()");
   }
 }
