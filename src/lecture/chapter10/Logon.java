@@ -31,6 +31,7 @@ public class Logon extends JFrame {
     portField.setName("PORT_INPUTFIELD");
     portField.setColumns(3);
 
+
     myComboBox.addItemListener((itemEvent)-> {
       System.out.println("Item Event ausgelöst: " + itemEvent.getItem());
       System.out.println("State change: " + itemEvent.getStateChange());
@@ -269,8 +270,7 @@ public class Logon extends JFrame {
   public static void main(String[] args) throws ParseException, UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
     // Set cross-platform Java L&F (also called "Metal")
-    //System.out.println(UIManager.getLookAndFeel());
-    UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+    //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
     System.out.println(UIManager.getLookAndFeel());
 
     GraphicsDevice defaultScreenDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -296,6 +296,11 @@ public class Logon extends JFrame {
       }
     );
     System.out.println("Added UI-Frame to starting queue - " + Thread.currentThread());
+  }
+
+  private JComponent findComponentByName(Container currentContainer, String name){
+    // TODO - Implement a method to find a component by its name in the currentContainer and its children
+    return null;
   }
 
 }
