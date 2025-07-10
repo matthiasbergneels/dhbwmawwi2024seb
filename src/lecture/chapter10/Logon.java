@@ -12,9 +12,14 @@ import java.util.Map;
 
 public class Logon extends JFrame {
 
+  // ACTION Constants
   private static final String ACTON_LOGIN = "ACTON_LOGIN";
   private static final String ACTION_BEENDEN = "ACTION_BEENDEN";
   private static final String ACTION_PRINT = "ACTION_PRINT";
+
+  // Component Name Constants
+  private static final String COMPONENT_NAME_PORT_INPUTFIELD = "PORT_INPUTFIELD";
+
   // Instanzattribute
   private final JFormattedTextField portField;
 
@@ -28,15 +33,20 @@ public class Logon extends JFrame {
     JComboBox<String> myComboBox = new JComboBox<>(new String[]{"SSH", "FTP", "HTTP", "HTTPS"});
 
     portField = new JFormattedTextField(new MaskFormatter("#####"));
-    portField.setName("PORT_INPUTFIELD");
+    portField.setName(COMPONENT_NAME_PORT_INPUTFIELD);
     portField.setColumns(3);
-
 
     myComboBox.addItemListener((itemEvent)-> {
       System.out.println("Item Event ausgelöst: " + itemEvent.getItem());
       System.out.println("State change: " + itemEvent.getStateChange());
       System.out.println("Parameter String: " + itemEvent.paramString());
 
+      JTextField portField = (JTextField) findComponentByName(this, COMPONENT_NAME_PORT_INPUTFIELD);
+
+      if(portField == null) {
+        System.out.println("Port Input Field not found!");
+        return;
+      }
       if(itemEvent.getStateChange() == ItemEvent.SELECTED) {
         System.out.println("Protokoll " + itemEvent.getItem() + " ausgewählt.");
         if(itemEvent.getItem().equals("SSH")) {
@@ -74,7 +84,7 @@ public class Logon extends JFrame {
     JLabel messageTextLabel = new JLabel("");
     northPanel.add(messageTextLabel);
 
-    //create & assign elements for connection area
+    //create and assign elements for connection area
     JPanel flowLayoutForCell = new JPanel(cellFlowLayout);
     flowLayoutForCell.add(new JLabel("User:"));
     connectionPanel.add(flowLayoutForCell);
@@ -107,7 +117,7 @@ public class Logon extends JFrame {
     connectionPanel.add(flowLayoutForCell);
     connectionPanel.add(portField);
 
-    // create & add Fields for File Area
+    // create and add Fields for File Area
     flowLayoutForCell = new JPanel(cellFlowLayout);
     flowLayoutForCell.add(new JLabel("Quelle:"));
     filePanel.add(flowLayoutForCell);
@@ -200,7 +210,7 @@ public class Logon extends JFrame {
     southPanel.add(cancelButton);
     southPanel.add(printButton);
 
-    // create & assign Borders
+    // create and assign Borders
     Border etchedBorder = BorderFactory.createEtchedBorder();
     Border connectionBorder = BorderFactory.createTitledBorder(etchedBorder, "Verbindung");
     Border fileBorder = BorderFactory.createTitledBorder(etchedBorder, "Datei");
@@ -279,10 +289,10 @@ public class Logon extends JFrame {
       defaultScreenDevice.getDefaultConfiguration().getBounds().getWidth(),
       defaultScreenDevice.getDefaultConfiguration().getBounds().getHeight()));
 
-    GraphicsEnvironment virtualGraphicsEvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    GraphicsDevice[] screens = virtualGraphicsEvironment.getScreenDevices();
+    GraphicsEnvironment virtualGraphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice[] screens = virtualGraphicsEnvironment.getScreenDevices();
 
-    // invokeLater für sichere parallel Verarbeitung
+    // using invokeLater for safe parallel processing
     SwingUtilities.invokeLater(() -> {
       JFrame logonUI = null;
       try {
@@ -299,7 +309,18 @@ public class Logon extends JFrame {
   }
 
   private JComponent findComponentByName(Container currentContainer, String name){
-    // TODO - Implement a method to find a component by its name in the currentContainer and its children
+    System.out.println(currentContainer);
+    for (Component component : currentContainer.getComponents()) {
+      if (name.equals(component.getName())) {
+        return (JComponent) component;
+      }
+      if (component instanceof Container) {
+        JComponent found = findComponentByName((Container) component, name);
+        if (found != null) {
+          return found;
+        }
+      }
+    }
     return null;
   }
 
