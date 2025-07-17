@@ -4,37 +4,32 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class MeldeamtUI extends JFrame {
-
-    private static final String RESSOURCE_IDENTIFIER_UILABELS = "i18n.uilabels";
+public class CitizenRegistrationUI extends JFrame {
 
     private static final String ACTION_ADD = "ADD";
     private static final String ACTION_SHOW = "SHOW";
     private static final String ACTION_SEARCH = "SEARCH";
     private static final String ACTION_DELETE = "DELETE";
-    private static final String ACTION_SHOWLIST = "SHOWLIST";
+    private static final String ACTION_SHOW_LIST = "SHOW_LIST";
     private static final String ACTION_CLOSE = "CLOSE";
     private static final String ACTION_LANGUAGE_DE = "ACTION_LANGUAGE_DE";
     private static final String ACTION_LANGUAGE_EN = "ACTION_LANGUAGE_EN";
 
-    private JLabel lblNotifications;
-    private JComboBox<Einwohner.Title> cbbTitle;
-    private JTextField tfName;
-    private JTextField tfVorname;
-    private JTextField tfGebName;
-    private JTextField tfEmail;
-    private ButtonGroup maritalGroup;
 
-    private String currentMaritalStatus = Einwohner.FAMILIENSTAND_VERHEIRATET;
+    private final ButtonGroup maritalStatusOptions = new ButtonGroup();
+    private JLabel notificationLabel;
+    private JComboBox<Title> titleComboBox;
+    private JTextField lastNameTextField;
+    private JTextField firstNameTextField;
+    private JTextField birthLastNameTextField;
+    private JTextField emailTextField;
+    private MaritalStatus currentMaritalStatus = MaritalStatus.MARRIED;
 
-    public MeldeamtUI(Locale locale) {
+    public CitizenRegistrationUI(Locale locale) {
         super();
 
         // Internationalisierung
@@ -42,7 +37,7 @@ public class MeldeamtUI extends JFrame {
             Locale.setDefault(locale);
         }
 
-        ResourceBundle uiLabelBundle = ResourceBundle.getBundle(RESSOURCE_IDENTIFIER_UILABELS);
+        ResourceBundle uiLabelBundle = ResourceBundle.getBundle(CitizenRegistrationUtilities.UI_LABELS_RESOURCE_IDENTIFIER);
 
         this.setTitle(uiLabelBundle.getString("frametitle"));
         this.setLayout(new BorderLayout());
@@ -54,95 +49,84 @@ public class MeldeamtUI extends JFrame {
 
           switch(action) {
             case ACTION_ADD -> {
-              boolean erg = ListenOperationen
-                .hinzufuegen(tfName.getText(), tfVorname.getText(),
-                  tfGebName.getText(), tfEmail.getText(),
-                  (Einwohner.Title) cbbTitle.getSelectedItem(),
+              boolean erg = CitizenListOperations
+                .addNewCitizen(lastNameTextField.getText(), firstNameTextField.getText(),
+                  birthLastNameTextField.getText(), emailTextField.getText(),
+                  (Title) titleComboBox.getSelectedItem(),
                   currentMaritalStatus);
               if (erg) {
-                lblNotifications.setText("Einwohner "
-                  + tfName.getText()
+                notificationLabel.setText("Einwohner "
+                  + lastNameTextField.getText()
                   + " erfolgreich hinzugefügt!");
               } else {
-                lblNotifications.setText("Einwohner "
-                  + tfName.getText()
+                notificationLabel.setText("Einwohner "
+                  + lastNameTextField.getText()
                   + " NICHT erfolgreich hinzugefügt!");
               }
             }
                 case ACTION_SHOW -> {
-                    boolean erg = ListenOperationen.anzeigen(tfName.getText(),
-                            tfVorname.getText());
+                    boolean erg = CitizenListOperations.showCitizen(lastNameTextField.getText(),
+                            firstNameTextField.getText());
                     if (erg) {
-                        lblNotifications.setText("Einwohner "
-                                + tfName.getText() + " angezeigt!");
+                        notificationLabel.setText("Einwohner "
+                                + lastNameTextField.getText() + " angezeigt!");
                     } else {
-                        lblNotifications.setText("Einwohner "
-                                + tfName.getText() + " NICHT angezeigt!");
+                        notificationLabel.setText("Einwohner "
+                                + lastNameTextField.getText() + " NICHT angezeigt!");
                     }
             }
                 case ACTION_SEARCH -> {
-                  boolean erg = ListenOperationen.suchen(tfName.getText(),
-                    tfVorname.getText());
+                  boolean erg = CitizenListOperations.searchCitizenByName(lastNameTextField.getText(),
+                    firstNameTextField.getText());
                   if (erg) {
-                    lblNotifications.setText("Einwohner "
-                      + tfName.getText() + " gefunden!");
+                    notificationLabel.setText("Einwohner "
+                      + lastNameTextField.getText() + " gefunden!");
                   } else {
-                    lblNotifications.setText("Einwohner "
-                      + tfName.getText() + " NICHT gefunden!");
+                    notificationLabel.setText("Einwohner "
+                      + lastNameTextField.getText() + " NICHT gefunden!");
                   }
                 }
                case ACTION_DELETE -> {
-                 boolean erg = ListenOperationen.loeschen(tfName.getText(),
-                   tfVorname.getText());
+                 boolean erg = CitizenListOperations.deleteCitizenByName(lastNameTextField.getText(),
+                   firstNameTextField.getText());
                  if (erg) {
-                   lblNotifications.setText("Einwohner "
-                     + tfName.getText() + " gelöscht!");
+                   notificationLabel.setText("Einwohner "
+                     + lastNameTextField.getText() + " gelöscht!");
                  } else {
-                   lblNotifications.setText("Einwohner "
-                     + tfName.getText() + " NICHT gefunden!");
+                   notificationLabel.setText("Einwohner "
+                     + lastNameTextField.getText() + " NICHT gefunden!");
                  }
                }
-                case ACTION_SHOWLIST -> {
-                    ListenOperationen.listeAusgeben();
-
+                case ACTION_SHOW_LIST -> {
+                    CitizenListOperations.printCitizenList();
                 }
                 case ACTION_CLOSE -> {
-                    ListenOperationen.speichernEinwohnerListeInDatei();
-                    System.exit(0);
-
+                    this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
                 }
                 case ACTION_LANGUAGE_DE -> {
-                    ListenOperationen.speichernEinwohnerListeInDatei();
+                    CitizenListOperations.saveCitizenDataToFile();
                     this.dispose();
-                    new MeldeamtUI(new Locale("de_DE"));
+                    startUI(Locale.GERMANY);
                 }
                 case ACTION_LANGUAGE_EN -> {
-                    ListenOperationen.speichernEinwohnerListeInDatei();
+                    CitizenListOperations.saveCitizenDataToFile();
                     this.dispose();
-                    new MeldeamtUI(new Locale("en_US"));
+                    startUI(Locale.US);
                 }
-        }
+            }
         };
 
-        // Action Listener - RadioButtonGroup Familienstand
-        ActionListener rbgMaritalStatus = new ActionListener() {
+        ItemListener maritalStatusItemListener = (ItemEvent e) -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                MaritalStatusRadioButton currentMaritalStatusButton = (MaritalStatusRadioButton) e.getItem();
+                currentMaritalStatus =currentMaritalStatusButton.getMaritalStatus();
 
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                JRadioButton btn = (JRadioButton) arg0.getSource();
-
-                currentMaritalStatus = btn.getText();
-
-                if (btn.isSelected()) {
-                    if (btn.getText().equals(Einwohner.FAMILIENSTAND_LEDIG)) {
-                        tfGebName.setText("");
-                        tfGebName.setEditable(false);
-                    } else {
-                        tfGebName.setEditable(true);
-                    }
-
+                if (currentMaritalStatus == MaritalStatus.SINGLE) {
+                    birthLastNameTextField.setText("");
+                    birthLastNameTextField.setEditable(false);
+                } else {
+                    birthLastNameTextField.setEditable(true);
                 }
-
             }
         };
 
@@ -161,8 +145,8 @@ public class MeldeamtUI extends JFrame {
         this.add(centerPanel, BorderLayout.CENTER);
 
         // North Panel - Leiste für Meldungen
-        lblNotifications = new JLabel("");
-        northPanel.add(lblNotifications);
+        notificationLabel = new JLabel("");
+        northPanel.add(notificationLabel);
 
         // Center Panel - Eingabebereich
         Border etchedBorder = BorderFactory.createEtchedBorder();
@@ -174,30 +158,28 @@ public class MeldeamtUI extends JFrame {
         contactDataPanel.setBorder(contactEtchedBorder);
         centerPanel.add(contactDataPanel);
 
-        Einwohner.Title[] titleValues = {Einwohner.Title.MRS, Einwohner.Title.MR, Einwohner.Title.DIVERS};
-
-        cbbTitle = new JComboBox<Einwohner.Title>(titleValues);
-        tfName = new JTextField(20);
-        tfName.setText("Mustermann");
-        tfVorname = new JTextField(20);
-        tfVorname.setText("Mimi");
-        tfGebName = new JTextField(20);
-        tfGebName.setText("Musterfrau");
-        tfEmail = new JTextField(20);
-        tfEmail.setText("mimi.mustermann@email.de");
+        titleComboBox = new JComboBox<>(Title.values());
+        lastNameTextField = new JTextField(20);
+        lastNameTextField.setText("Mustermann");
+        firstNameTextField = new JTextField(20);
+        firstNameTextField.setText("Mimi");
+        birthLastNameTextField = new JTextField(20);
+        birthLastNameTextField.setText("Musterfrau");
+        emailTextField = new JTextField(20);
+        emailTextField.setText("mimi.mustermann@email.de");
 
         contactDataPanel.add(new JLabel(uiLabelBundle.getString("label_title")+":"));
-        cbbTitle.setToolTipText("Anrede auswählen");
-        contactDataPanel.add(cbbTitle);
+        titleComboBox.setToolTipText("Anrede auswählen");
+        contactDataPanel.add(titleComboBox);
         contactDataPanel.add(new JLabel(uiLabelBundle.getString("label_name")+":"));
-        tfName.setToolTipText("Nachname eingeben - z.B. \"Mustermann\"");
-        contactDataPanel.add(tfName);
+        lastNameTextField.setToolTipText("Nachname eingeben - z.B. \"Mustermann\"");
+        contactDataPanel.add(lastNameTextField);
         contactDataPanel.add(new JLabel(uiLabelBundle.getString("label_firstname")+":"));
-        contactDataPanel.add(tfVorname);
+        contactDataPanel.add(firstNameTextField);
         contactDataPanel.add(new JLabel(uiLabelBundle.getString("label_birthname")+":"));
-        contactDataPanel.add(tfGebName);
+        contactDataPanel.add(birthLastNameTextField);
         contactDataPanel.add(new JLabel(uiLabelBundle.getString("label_email")+":"));
-        contactDataPanel.add(tfEmail);
+        contactDataPanel.add(emailTextField);
 
         // Familienstand
         JPanel maritalStatusPanel = new JPanel(new GridLayout(0, 1));
@@ -206,32 +188,24 @@ public class MeldeamtUI extends JFrame {
         maritalStatusPanel.setBorder(maritalEtchedBorder);
         centerPanel.add(maritalStatusPanel);
 
-        maritalGroup = new ButtonGroup();
+        MaritalStatusRadioButton maritalStatusSingleRadioButton = new MaritalStatusRadioButton(MaritalStatus.SINGLE, maritalStatusItemListener);
+        MaritalStatusRadioButton maritalStatusMarriedRadioButton = new MaritalStatusRadioButton(MaritalStatus.MARRIED, maritalStatusItemListener);
+        MaritalStatusRadioButton maritalStatusWidowedRadioButton = new MaritalStatusRadioButton(MaritalStatus.WIDOWED, maritalStatusItemListener);
+        MaritalStatusRadioButton maritalStatusDivorcedRadioButton = new MaritalStatusRadioButton(MaritalStatus.DIVORCED, maritalStatusItemListener);
 
-        JRadioButton rbtL = new JRadioButton(Einwohner.FAMILIENSTAND_LEDIG);
-        JRadioButton rbtVH = new JRadioButton(
-                Einwohner.FAMILIENSTAND_VERHEIRATET);
-        JRadioButton rbtVW = new JRadioButton(Einwohner.FAMILIENSTAND_VERWITWET);
-        JRadioButton rbtG = new JRadioButton(Einwohner.FAMILIENSTAND_GESCHIEDEN);
+        maritalStatusMarriedRadioButton.setSelected(true);
 
-        rbtVH.setSelected(true);
+        maritalStatusOptions.add(maritalStatusSingleRadioButton);
+        maritalStatusOptions.add(maritalStatusMarriedRadioButton);
+        maritalStatusOptions.add(maritalStatusWidowedRadioButton);
+        maritalStatusOptions.add(maritalStatusDivorcedRadioButton);
 
-        maritalGroup.add(rbtL);
-        rbtL.addActionListener(rbgMaritalStatus);
-        maritalGroup.add(rbtVH);
-        rbtVH.addActionListener(rbgMaritalStatus);
-        maritalGroup.add(rbtVW);
-        rbtVW.addActionListener(rbgMaritalStatus);
-        maritalGroup.add(rbtG);
-        rbtG.addActionListener(rbgMaritalStatus);
-
-        maritalStatusPanel.add(rbtL);
-        maritalStatusPanel.add(rbtVH);
-        maritalStatusPanel.add(rbtVW);
-        maritalStatusPanel.add(rbtG);
+        maritalStatusPanel.add(maritalStatusSingleRadioButton);
+        maritalStatusPanel.add(maritalStatusMarriedRadioButton);
+        maritalStatusPanel.add(maritalStatusWidowedRadioButton);
+        maritalStatusPanel.add(maritalStatusDivorcedRadioButton);
 
         // South Panel - Leiste für Buttons
-
         JButton btnAdd = new JButton(uiLabelBundle.getString("btn_add"));
         btnAdd.setActionCommand(ACTION_ADD);
         btnAdd.addActionListener(btnListener);
@@ -249,9 +223,8 @@ public class MeldeamtUI extends JFrame {
         btnDelete.addActionListener(btnListener);
 
         JButton btnShowList = new JButton(uiLabelBundle.getString("btn_showlist"));
-        btnShowList.setActionCommand(ACTION_SHOWLIST);
+        btnShowList.setActionCommand(ACTION_SHOW_LIST);
         btnShowList.addActionListener(btnListener);
-
 
         southPanel.add(btnAdd);
         southPanel.add(btnShow);
@@ -283,7 +256,7 @@ public class MeldeamtUI extends JFrame {
         menuItemSearch.addActionListener(btnListener);
 
         JMenuItem menuItemShowList = new JMenuItem(uiLabelBundle.getString("btn_showlist"));
-        menuItemShowList.setActionCommand(ACTION_SHOWLIST);
+        menuItemShowList.setActionCommand(ACTION_SHOW_LIST);
         menuItemShowList.addActionListener(btnListener);
 
         JMenu listFunctions = new JMenu(uiLabelBundle.getString("menu_listfunctions"));
@@ -309,18 +282,17 @@ public class MeldeamtUI extends JFrame {
 
         this.setJMenuBar(menuBar);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setVisible(true);
         this.pack();
 
         this.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
-                ListenOperationen.ladenEinwohnerListeVonDatei();
+                CitizenListOperations.loadCitizenDataFromFile();
             }
 
             @Override
             public void windowClosing(WindowEvent e) {
-                ListenOperationen.speichernEinwohnerListeInDatei();
+                CitizenListOperations.saveCitizenDataToFile();
             }
 
             @Override
@@ -351,8 +323,28 @@ public class MeldeamtUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        //Listenoperationen.readSetFromFile();
-        new MeldeamtUI(null);
+        startUI(null);
+    }
+
+    private static void startUI(Locale locale) {
+      SwingUtilities.invokeLater(() -> {
+        JFrame citizenRegistrationUI = new CitizenRegistrationUI(locale);
+        citizenRegistrationUI.setVisible(true);
+      });
+    }
+
+    private class MaritalStatusRadioButton extends JRadioButton {
+        private final MaritalStatus maritalStatus;
+
+        private MaritalStatusRadioButton(MaritalStatus maritalStatus, ItemListener itemListener) {
+            super(maritalStatus.toString());
+            this.maritalStatus = maritalStatus;
+            this.addItemListener(itemListener);
+        }
+
+        public MaritalStatus getMaritalStatus() {
+            return maritalStatus;
+        }
     }
 }
 
