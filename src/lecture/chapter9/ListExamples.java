@@ -14,6 +14,8 @@ public class ListExamples {
 
     List<String> nameList = new ArrayList<String>();
 
+    new ArrayList(50);
+
     nameList.add("Gabi");
     nameList.add("Daniel");
     nameList.add("Monika");
