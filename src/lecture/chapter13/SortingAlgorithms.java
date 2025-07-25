@@ -2,6 +2,8 @@ package lecture.chapter13;
 
 public class SortingAlgorithms {
 
+  private static long quickSortSwapCount = 0;
+
   public static void main(String[] args) {
 
     int[] toSort = {50, 70, 100, 80, 40, 30, 20, 10 ,60};
@@ -26,6 +28,10 @@ public class SortingAlgorithms {
 
     System.out.println("Selection Sort V2 sortiert: ");
     sorted = selectionSortV2(toSort.clone());
+    printArray(sorted);
+
+    System.out.println("QuickSort sortiert: ");
+    sorted = quickSort(toSort.clone());
     printArray(sorted);
 
   }
@@ -129,6 +135,50 @@ public class SortingAlgorithms {
     printRuntimeDuration("SelectionSortV2", numbers.length, startTime, stopTime, swapCount);
 
     return numbers;
+  }
+
+  public static int[] quickSort(int[] numbers){
+    quickSortSwapCount = 0;
+    long startTime = System.nanoTime();
+
+    quickSort(numbers, 0, numbers.length-1);
+
+    long stopTime = System.nanoTime();
+    printRuntimeDuration("QuickSort", numbers.length, startTime, stopTime, quickSortSwapCount);
+    return numbers;
+  }
+
+  private static void quickSort(int[] numbers, int left, int right) {
+
+    int indexLeft = left;
+    int indexRight = right;
+
+    if (left < right) {
+      int pivot = numbers[(indexLeft + indexRight) / 2];
+
+      while (indexLeft <= indexRight) {
+        while (numbers[indexLeft] < pivot) {
+          indexLeft++;
+        }
+        while (numbers[indexRight] > pivot) {
+          indexRight--;
+        }
+        // Vorsortierung der Array Seiten
+        if (indexLeft <= indexRight) {
+          swap(numbers, indexLeft, indexRight);
+          quickSortSwapCount++;
+          indexLeft++;
+          indexRight--;
+        }
+      }
+
+      if (left < indexRight) {
+        quickSort(numbers, left, indexRight);
+      }
+      if (indexLeft < right) {
+        quickSort(numbers, indexLeft, right);
+      }
+    }
   }
 
 

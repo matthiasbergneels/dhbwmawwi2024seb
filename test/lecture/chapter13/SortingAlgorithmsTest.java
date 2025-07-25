@@ -4,11 +4,12 @@ import org.junit.jupiter.api.*;
 
 import java.time.Duration;
 
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SortingAlgorithmsTest {
 
-  static int count = 50000;
+  static int count = 100000;
   static int randomRange = 3000000;
   static int[] toSort = null;
 
@@ -42,6 +43,12 @@ class SortingAlgorithmsTest {
     void selectionSortV2() {
       int[] selectionSortedArray = SortingAlgorithms.selectionSortV2(toSort.clone());
       assertTrue(isSorted(selectionSortedArray));
+    }
+
+    @Test
+    void quickSort() {
+      int[] quickSortedArray = SortingAlgorithms.quickSort(toSort.clone());
+      assertTrue(isSorted(quickSortedArray));
     }
   }
 
@@ -78,6 +85,11 @@ class SortingAlgorithmsTest {
       assertTrue(isSorted(selectionSortedArray));
     }
 
+    @Test
+    void quickSort() {
+      int[] quickSortedArray = SortingAlgorithms.quickSort(toSort.clone());
+      assertTrue(isSorted(quickSortedArray));
+    }
   }
 
   @Nested
@@ -112,8 +124,30 @@ class SortingAlgorithmsTest {
       assertTrue(isSorted(selectionSortedArray));
     }
 
+    @Test
+    void quickSort() {
+      int[] quickSortedArray = SortingAlgorithms.quickSort(toSort.clone());
+      assertTrue(isSorted(quickSortedArray));
+    }
   }
 
+    @Nested
+    class RuntimeTestCases {
+      @BeforeAll
+      static void setUp() {
+        generateArray();
+      }
+
+        @Test
+      void quickSortRuntime() {
+
+        assertTimeout(Duration.ofMillis(13 ), () -> {
+          SortingAlgorithms.quickSort(toSort.clone());
+        });
+
+      }
+
+    }
 
 // Helper Methods
 private static void generateOrderedArray() {
