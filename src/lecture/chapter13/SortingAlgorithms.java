@@ -20,6 +20,14 @@ public class SortingAlgorithms {
     sorted = bubbleSortV2(toSort.clone());
     printArray(sorted);
 
+    System.out.println("Selection Sort sortiert: ");
+    sorted = selectionSort(toSort.clone());
+    printArray(sorted);
+
+    System.out.println("Selection Sort V2 sortiert: ");
+    sorted = selectionSortV2(toSort.clone());
+    printArray(sorted);
+
   }
 
   public static int[] bubbleSort(int[] numbers){
@@ -69,6 +77,59 @@ public class SortingAlgorithms {
     return numbers;
   }
 
+  public static int[] selectionSort(int[] numbers){
+
+    long swapCount = 0;
+    long startTime = System.nanoTime();
+
+    int sortedMarker = numbers.length-1;
+
+    while(sortedMarker > 0){
+      int maxPos = 0;
+      for(int i = 1; i <= sortedMarker; i++){
+        if(numbers[i] > numbers[maxPos]){
+          maxPos = i;
+        }
+      }
+
+      swap(numbers, maxPos, sortedMarker);
+      swapCount++;
+      sortedMarker--;
+    }
+
+    long stopTime = System.nanoTime();
+    printRuntimeDuration("SelectionSort", numbers.length, startTime, stopTime, swapCount);
+
+    return numbers;
+  }
+
+  public static int[] selectionSortV2(int[] numbers){
+
+    long swapCount = 0;
+    long startTime = System.nanoTime();
+
+    int sortedMarker = numbers.length-1;
+
+    while(sortedMarker > 0){
+      int maxPos = 0;
+      for(int i = 1; i <= sortedMarker; i++){
+        if(numbers[i] > numbers[maxPos]){
+          maxPos = i;
+        }
+      }
+
+      if(maxPos != sortedMarker) {
+        swap(numbers, maxPos, sortedMarker);
+        swapCount++;
+      }
+      sortedMarker--;
+    }
+
+    long stopTime = System.nanoTime();
+    printRuntimeDuration("SelectionSortV2", numbers.length, startTime, stopTime, swapCount);
+
+    return numbers;
+  }
 
 
 

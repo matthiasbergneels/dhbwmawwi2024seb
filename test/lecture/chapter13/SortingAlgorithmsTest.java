@@ -31,6 +31,18 @@ class SortingAlgorithmsTest {
       int[] bubbleSortedArray = SortingAlgorithms.bubbleSortV2(toSort.clone());
       assertTrue(isSorted(bubbleSortedArray));
     }
+
+    @Test
+    void selectionSort() {
+      int[] selectionSortedArray = SortingAlgorithms.selectionSort(toSort.clone());
+      assertTrue(isSorted(selectionSortedArray));
+    }
+
+    @Test
+    void selectionSortV2() {
+      int[] selectionSortedArray = SortingAlgorithms.selectionSortV2(toSort.clone());
+      assertTrue(isSorted(selectionSortedArray));
+    }
   }
 
 
@@ -54,6 +66,18 @@ class SortingAlgorithmsTest {
       assertTrue(isSorted(bubbleSortedArray));
     }
 
+    @Test
+    void selectionSort() {
+      int[] selectionSortedArray = SortingAlgorithms.selectionSort(toSort.clone());
+      assertTrue(isSorted(selectionSortedArray));
+    }
+
+    @Test
+    void selectionSortV2() {
+      int[] selectionSortedArray = SortingAlgorithms.selectionSortV2(toSort.clone());
+      assertTrue(isSorted(selectionSortedArray));
+    }
+
   }
 
   @Nested
@@ -74,6 +98,18 @@ class SortingAlgorithmsTest {
     void bubbleSortV2() {
       int[] bubbleSortedArray = SortingAlgorithms.bubbleSortV2(toSort.clone());
       assertTrue(isSorted(bubbleSortedArray));
+    }
+
+    @Test
+    void selectionSort() {
+      int[] selectionSortedArray = SortingAlgorithms.selectionSort(toSort.clone());
+      assertTrue(isSorted(selectionSortedArray));
+    }
+
+    @Test
+    void selectionSortV2() {
+      int[] selectionSortedArray = SortingAlgorithms.selectionSortV2(toSort.clone());
+      assertTrue(isSorted(selectionSortedArray));
     }
 
   }
