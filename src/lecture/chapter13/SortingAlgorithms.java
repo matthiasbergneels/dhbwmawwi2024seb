@@ -24,13 +24,20 @@ public class SortingAlgorithms {
 
   public static int[] bubbleSort(int[] numbers){
 
+    long swapCount = 0;
+    long startTime = System.nanoTime();
+
     for(int i = 0; i < numbers.length-1; i++){
       for(int j = 0; j < numbers.length-1-i; j++){
         if(numbers[j] > numbers[j+1]){
           swap(numbers, j, j+1);
+          swapCount++;
         }
       }
     }
+
+    long stopTime = System.nanoTime();
+    printRuntimeDuration("BubbleSort", numbers.length, startTime, stopTime, swapCount);
 
     return numbers;
   }
@@ -40,16 +47,24 @@ public class SortingAlgorithms {
     boolean swapped = true;
     int sortedAreaSize = 0;
 
+    long swapCount = 0;
+    long startTime = System.nanoTime();
+
     while(swapped) {
       swapped = false;
       for (int j = 0; j < numbers.length - 1 - sortedAreaSize; j++) {
         if (numbers[j] > numbers[j + 1]) {
           swap(numbers, j, j + 1);
+          swapCount++;
           swapped = true;
         }
       }
       sortedAreaSize++;
     }
+
+    long stopTime = System.nanoTime();
+    printRuntimeDuration("BubbleSortV2", numbers.length, startTime, stopTime, swapCount);
+
 
     return numbers;
   }
@@ -68,5 +83,12 @@ public class SortingAlgorithms {
       System.out.print(numbers[i] + ((i == numbers.length-1)?"" : ", "));
     }
     System.out.println();
+  }
+
+  private static void printRuntimeDuration(String algorithmName, int elementCount, long startTime, long endTime, long swapCount){
+    long durationInNanoSeconds = endTime - startTime;
+    long durationInMilliSeconds = (long) (durationInNanoSeconds / 10e5);
+
+    System.out.println("Runtime for " + elementCount + " Elements with " + algorithmName + ": " + durationInNanoSeconds + " ns (" + durationInMilliSeconds + " ms); swapped " + swapCount + " times");
   }
 }
