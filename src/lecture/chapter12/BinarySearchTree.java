@@ -94,7 +94,7 @@ public class BinarySearchTree<D extends Comparable<D>> {
     }
   }
 
-  // In-order traversal (Ascending) --> left - current - right
+  // In-order traversal (Ascending) (Left, current, Right)
   private void printInOrder(Node currentNode){
     if(currentNode.getLeftChild() != null){
       printInOrder(currentNode.getLeftChild());
