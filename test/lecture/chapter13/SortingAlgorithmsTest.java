@@ -140,11 +140,9 @@ class SortingAlgorithmsTest {
 
         @Test
       void quickSortRuntime() {
-
         assertTimeout(Duration.ofMillis(13 ), () -> {
           SortingAlgorithms.quickSort(toSort.clone());
         });
-
       }
 
     }

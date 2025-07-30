@@ -75,11 +75,11 @@ public class Student implements Comparable<Student>{
   }
 
   public int hashCode(){
-    return id ^ familyName.hashCode() ^ name.hashCode();
+    return Integer.hashCode(id) ^ familyName.hashCode() ^ name.hashCode();
   }
 
 
-/*
+  /*
   @Override
   public int hashCode() {
     int result = id;
@@ -88,7 +88,8 @@ public class Student implements Comparable<Student>{
     return result;
   }
 
- */
+   */
+
 
 
   @Override

@@ -111,22 +111,22 @@ public class BinarySearchTree<D extends Comparable<D>> {
     System.out.println(currentNode.getData());
 
     if(currentNode.getLeftChild() != null){
-      printInOrder(currentNode.getLeftChild());
+      printPreOrder(currentNode.getLeftChild());
     }
 
     if(currentNode.getRightChild() != null) {
-      printInOrder(currentNode.getRightChild());
+      printPreOrder(currentNode.getRightChild());
     }
   }
 
   // Post-order traversal (Left, Right, current)
   private void printPostOrder(Node currentNode){
     if(currentNode.getLeftChild() != null){
-      printInOrder(currentNode.getLeftChild());
+      printPostOrder(currentNode.getLeftChild());
     }
 
     if(currentNode.getRightChild() != null) {
-      printInOrder(currentNode.getRightChild());
+      printPostOrder(currentNode.getRightChild());
     }
 
     System.out.println(currentNode.getData());

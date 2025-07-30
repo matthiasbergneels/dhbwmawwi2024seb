@@ -42,6 +42,8 @@ public class Uebung1 {
       datei2.flush();
     } catch (IOException e) {
       System.out.println("Da ist etwas schief gelaufen! IO");
+    } catch (Exception e) {
+
     }
   }
 }
